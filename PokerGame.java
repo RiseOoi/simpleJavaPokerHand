@@ -22,7 +22,6 @@ public class PokerGame {
 	
 	
 	/**
-	 * ポーカーの結果を返します
 	 * @param card 
 	 * @return
 	 */
