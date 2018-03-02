@@ -30,11 +30,20 @@ public class PokerGameTest {
 	Card S7 = new Card(7, Card.Mark.SPADE);
 	Card S8 = new Card(8, Card.Mark.SPADE);
 	Card S9 = new Card(9, Card.Mark.SPADE);
+	Card S10 = new Card(10, Card.Mark.SPADE);
+	Card S11 = new Card(11, Card.Mark.SPADE);
+	Card S12 = new Card(12, Card.Mark.SPADE);
+	Card S13 = new Card(13, Card.Mark.SPADE);
 	
 	Card C1 = new Card(1, Card.Mark.CLUB);
 	Card D1 = new Card(1, Card.Mark.DIAMOND);
 	
-	//test boundaries of numbers
+	
+	@Test
+	public void noPair() {
+		Card[] onePair = {S1, H2, H3, H4, H7};
+		assertThat(PokerGame.judge(onePair), is(PokerGame.NO_PAIR_MESSAGE));
+	}
 	
 	@Test
 	public void testOnePair() {
@@ -51,12 +60,12 @@ public class PokerGameTest {
 	@Test
 	public void testThreeCards() {
 		Card[] onePair = {H1, S1, C1, H2, H3};
-		assertThat(PokerGame.judge(onePair), is(PokerGame.THREE_CARDS_MESSAGE));
+		assertThat(PokerGame.judge(onePair), is(PokerGame.THREE_OF_A_KIND_MESSAGE));
 	}
 	
 	@Test
 	public void testEndStraight() {
-		Card[] straight = {H1, H13, H12, H11, H10};
+		Card[] straight = {S1, H13, H12, H11, H10};
 		assertThat(PokerGame.judge(straight), is(PokerGame.STRAIGHT_MESSAGE));
 	}
 	
@@ -81,41 +90,34 @@ public class PokerGameTest {
 	}
 	
 	@Test
+	public void testFullHouse() {
+		Card[] fullhouse = {H1, S1, C1, H5, S5};
+		assertThat(PokerGame.judge(fullhouse), is(PokerGame.FULL_HOUSE_MESSAGE));
+	}
+	
+	@Test
 	public void testFourOfAKind() {
-		// EXTRA TESTING
 		Card[] four = {S1, H1, C1, D1, H5};
 		assertThat(PokerGame.judge(four), is(PokerGame.FOUR_CARDS_MESSAGE));
 	}
 	
 	@Test
 	public void testFlush() {
-		// EXTRA TESTING
 		Card[] flush = {H1, H2, H5, H7, H9};
 		assertThat(PokerGame.judge(flush), is(PokerGame.FLUSH_MESSAGE));
 	}
 	
 	@Test
 	public void testStraightFlush() {
-		// EXTRA TESTING
 		Card[] straightflush = {H5, H6, H7, H8, H9};
 		assertThat(PokerGame.judge(straightflush), is(PokerGame.STRAIGHT_FLUSH_MESSAGE));
 	}
 	
 	@Test
 	public void testRoyalStraightFlush() {
-		// EXTRA TESTING
 		Card[] royalstraightflush = {H1, H13, H12, H11, H10};
 		assertThat(PokerGame.judge(royalstraightflush), is(PokerGame.ROYAL_STRAIGHT_FLUSH_MESSAGE));
 	}
 	
-	@Test
-	public void noPair() {
-		Card[] onePair = {S1, H2, H3, H4, H7};
-		assertThat(PokerGame.judge(onePair), is(PokerGame.NO_PAIR_MESSAGE));
-	}
-
-	
-	
-	
-	
 }
+

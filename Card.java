@@ -27,3 +27,4 @@ public class Card {
 		HEART, DIAMOND, CLUB, SPADE;
 	}
 }
+

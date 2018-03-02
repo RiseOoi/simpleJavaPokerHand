@@ -4,7 +4,7 @@ public class PokerGame {
 
 	public static final String STRAIGHT_MESSAGE = "Straight!";
 	
-	public static final String THREE_CARDS_MESSAGE = "Three Cards.";
+	public static final String THREE_OF_A_KIND_MESSAGE = "Three Cards.";
 	
 	public static final String TWO_PAIRS_MESSAGE = "Two Pairs.";
 	
@@ -13,12 +13,14 @@ public class PokerGame {
 	public static final String NO_PAIR_MESSAGE = "No Pair...";
 
 	public static final String FLUSH_MESSAGE = "Flush!";
+	
+	public static final String FULL_HOUSE_MESSAGE = "Fu-Fu-Full House!";
 
-	public static final String FOUR_CARDS_MESSAGE = "FOUR OF A KIND!";
+	public static final String FOUR_CARDS_MESSAGE = "FOUR OF A KIND!!";
 
 	public static final String STRAIGHT_FLUSH_MESSAGE = "IT'S STRAIGHT FLUSH!!!";
 
-	public static final String ROYAL_STRAIGHT_FLUSH_MESSAGE = "Welp, Royal Straight Flush.";
+	public static final String ROYAL_STRAIGHT_FLUSH_MESSAGE = "Welp, Royal Straight Flush, I am outta here.";
 	
 	
 	/**
@@ -40,6 +42,9 @@ public class PokerGame {
 		else if (isFourOfAKind(card)) {
 			return FOUR_CARDS_MESSAGE;
 		}
+		else if (isFullHouse(card)) {
+			return FULL_HOUSE_MESSAGE;
+		}
 		else if (isFlush(card)) {
 			return FLUSH_MESSAGE;
 		}
@@ -47,7 +52,7 @@ public class PokerGame {
 			return STRAIGHT_MESSAGE;
 		}
 		else if (isThreeCards(card)) {
-			return THREE_CARDS_MESSAGE;
+			return THREE_OF_A_KIND_MESSAGE;
 		}
 		else if (isTwoPairs(card)) {
 			return TWO_PAIRS_MESSAGE;
@@ -59,6 +64,7 @@ public class PokerGame {
 			return NO_PAIR_MESSAGE;
 		}
 	}
+	
 	
 	private static boolean isRoyalStraightFlush(Card[] card) {
 		// hash storing sum
@@ -75,15 +81,15 @@ public class PokerGame {
 		return false;
 	}
 	
+	
 	private static boolean isStraightFlush(Card[] card) {
 		if(isStraight(card) && isFlush(card)) {
 			return true;
 		}
 		return false;
 	}
-	
-	
 
+	
 	private static boolean isFourOfAKind(Card[] card) {
 		// hash storing sum
 		int[] hash = new int[13]; // NOTE: hash[0] is redundant!
@@ -109,6 +115,34 @@ public class PokerGame {
 	}
 	
 	
+	private static boolean isFullHouse(Card[] card) {
+		// hash storing sum
+		int[] hash = new int[13]; // NOTE: hash[0] is redundant!
+		for(int i=0; i<card.length; i++) {
+			hash[card[i].number-1]++;
+		}
+		
+		// find pair and three of a kind
+		Boolean pairFlag = false;
+		Boolean threeFlag = false;
+		for(int i=0; i<hash.length; i++) {
+			if(hash[i] == 2) {
+				pairFlag = true;
+			}
+			if(hash[i] == 3) {
+				threeFlag = true;
+			}
+		}
+		// if three cards exist
+		if(pairFlag && threeFlag) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
 	private static boolean isFlush(Card[] card) {
 		// hash storing sum
 		Card.Mark record = card[0].mark;
@@ -120,16 +154,14 @@ public class PokerGame {
 		return true;
 	}
 
-
+	
 	private static boolean isStraight(Card[] card) {
 		// hash storing sum
 		int[] hash = new int[13];
 		for(int i=0; i<card.length; i++) {
 			hash[card[i].number-1]++;
 		}
-		
-		// check straight
-		for(int i=0; i<hash.length-4; i++) {
+		for(int i=0; i<hash.length-3; i++) {
 			if (hash[i] == 1) {
 				if (hash[i+1] == 1) {
 					if (hash[i+2] == 1) {
@@ -140,13 +172,12 @@ public class PokerGame {
 						}
 					}
 				}
-				return false;
 			}
 		}
 		return false;
 	}
-	
 
+	
 	private static boolean isThreeCards(Card[] card) {
 		// hash storing sum
 		int[] hash = new int[13]; // NOTE: hash[0] is redundant!
@@ -171,6 +202,7 @@ public class PokerGame {
 		}
 	}
 	
+	
 	private static boolean isTwoPairs(Card[] card) {
 		// hash storing sum
 		int[] hash = new int[13]; // NOTE: hash[0] is redundant!
@@ -193,6 +225,7 @@ public class PokerGame {
 		return false;
 	}
 	
+	
 	private static boolean isOnePair(Card[] card) {
 		int[] hash = new int[13]; // NOTE: hash[0] is redundant!
 		for(int i=0; i<card.length; i++) {
@@ -206,4 +239,6 @@ public class PokerGame {
 		}
 		return false;
 	}
+	
 }
+
